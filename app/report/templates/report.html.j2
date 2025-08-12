@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ report.company_title }} — Company Research</title>
+    <style>{{ css_inline|safe }}</style>
+  </head>
+  <body>
+    <section class="cover">
+      <div class="branding">Company Research Report</div>
+      <h1>{{ report.company_title }}</h1>
+      <div class="meta">
+        {% if report.industry %}<div><strong>Industry:</strong> {{ report.industry }}</div>{% endif %}
+        {% if report.location %}<div><strong>HQ:</strong> {{ report.location }}</div>{% endif %}
+        {% if report.founded %}<div><strong>Founded:</strong> {{ report.founded }}</div>{% endif %}
+        {% if report.employees %}<div><strong>Employees:</strong> {{ report.employees }}</div>{% endif %}
+        {% if report.website %}<div><strong>Website:</strong> {{ report.website }}</div>{% endif %}
+      </div>
+    </section>
+
+    {% if report.leaders or report.products or report.revenue %}
+    <section class="summary-grid">
+      {% if report.leaders %}
+        <div class="card">
+          <h2>Leadership</h2>
+          <ul>
+            {% for l in report.leaders[:8] %}<li>{{ l }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      {% if report.products %}
+        <div class="card">
+          <h2>Key Products</h2>
+          <ul>
+            {% for p in report.products[:8] %}<li>{{ p }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+      {% if report.revenue %}
+        <div class="card">
+          <h2>Revenue (est.)</h2>
+          <p>{{ report.revenue }}</p>
+        </div>
+      {% endif %}
+    </section>
+    {% endif %}
+
+    {% for sec in report.sections %}
+      <section class="section">
+        <h2>{{ sec.title }}</h2>
+        <div class="content">{{ sec.content | safe }}</div>
+        {% if sec.sources %}
+          <div class="sources">
+            <div class="label">Sources</div>
+            <ul>
+              {% for s in sec.sources[:6] %}
+                <li>{{ s }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+      </section>
+    {% endfor %}
+
+    {% if report.peers %}
+      <section class="section">
+        <h2>Close Peers</h2>
+        <ul>
+          {% for peer in report.peers %}
+            <li>{{ peer }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    {% if report.differentiation %}
+      <section class="section">
+        <h2>Competitive Differentiation</h2>
+        <div class="content">{{ report.differentiation }}</div>
+      </section>
+    {% endif %}
+
+    {% if report.references %}
+      <section class="section">
+        <h2>References</h2>
+        <ul>
+          {% for ref in report.references %}
+            <li>{{ ref }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+  </body>
+</html>

@@ -1,5 +1,7 @@
 from typing import List, Optional
 from ..models import ReportData, ReportSection
+from ..config import settings
+from ..sources.llm import build_report_with_llm
 from ..sources.wikipedia import get_company_overview
 from ..sources.website import extract_from_urls
 from ..sources.finance import estimate_revenue
@@ -11,6 +13,13 @@ async def assemble_company_report(company_title: str,
                                  expected_pages: int = 4,
                                  interests: Optional[str] = None,
                                  reference_urls: Optional[List[str]] = None) -> ReportData:
+    # Prefer LLM synthesis when available
+    if settings.openai_api_key:
+        llm_report = await build_report_with_llm(company_title, expected_pages, interests, reference_urls)
+        if llm_report:
+            return llm_report
+
+    # Fallback path using public sources without LLM
     overview = await get_company_overview(company_title)
 
     # Enrich from provided URLs
@@ -27,6 +36,10 @@ async def assemble_company_report(company_title: str,
 
     sections: List[ReportSection] = []
 
+    # Prefer overview summary as intro if present
+    if overview.summary:
+        sections.append(ReportSection(title="Executive Summary", content=overview.summary, sources=overview.sources))
+
     history_text = overview.history or url_insights.get("history", "")
     if history_text:
         sections.append(ReportSection(title="Brief History", content=history_text, sources=overview.sources))
@@ -37,9 +50,15 @@ async def assemble_company_report(company_title: str,
     if strategy_text:
         sections.append(ReportSection(title="Strategy and Outlook", content=strategy_text, sources=overview.sources))
 
+    products_text = "\n".join(f"- {p}" for p in overview.products)
+    if products_text or revenue:
+        content = (products_text + (f"\n\nEstimated revenue: {revenue}" if revenue else "")).strip()
+        sections.append(ReportSection(title="Key Products and Revenue Streams", content=content, sources=overview.sources))
+
     peers_text = "\n".join(f"- {p}" for p in overview.peers)
-    if peers_text:
-        sections.append(ReportSection(title="Peers and Competitive Positioning", content=peers_text, sources=overview.sources))
+    if peers_text or overview.differentiation:
+        content = (peers_text + (f"\n\nDifferentiation: {overview.differentiation}" if overview.differentiation else "")).strip()
+        sections.append(ReportSection(title="Peers and Competitive Positioning", content=content, sources=overview.sources))
 
     values_text = url_insights.get("values") or overview.values
     if values_text:
