@@ -1,0 +1,61 @@
+@page {
+  size: A4;
+  margin: 24mm 18mm 24mm 18mm;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: #111827;
+  line-height: 1.45;
+}
+
+h1, h2, h3 { color: #0b1f44; }
+
+.cover {
+  page-break-after: always;
+}
+
+.cover h1 {
+  font-size: 28pt;
+  margin: 12mm 0 6mm 0;
+}
+
+.cover .branding {
+  color: #3b82f6;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.cover .meta div { margin: 2mm 0; }
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6mm;
+  page-break-inside: avoid;
+}
+
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 4mm 5mm;
+}
+
+.card h2 { margin-top: 0; font-size: 12pt; }
+
+.section {
+  margin-top: 10mm;
+}
+
+.section h2 {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 2mm;
+}
+
+.section .content p { margin: 3mm 0; }
+.section .content ul { margin: 3mm 0 3mm 6mm; }
+
+.sources { margin-top: 4mm; font-size: 9pt; color: #374151; }
+.sources .label { font-weight: 600; margin-bottom: 1mm; }
+.sources ul { margin: 0 0 0 5mm; }
