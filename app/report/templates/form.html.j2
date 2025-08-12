@@ -1,0 +1,73 @@
+{% if step == 'input' %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Company Research Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 24px; max-width: 900px; margin: auto; }
+      h1 { font-weight:700; }
+      label { display:block; margin: 12px 0 6px; font-weight:600; }
+      input[type=text], input[type=number], textarea { width:100%; padding:10px; border:1px solid #d0d7de; border-radius:8px; }
+      button { margin-top: 16px; background:#0f62fe; color:#fff; border:none; padding:12px 16px; border-radius:8px; font-weight:600; cursor:pointer; }
+      .error { color:#c62828; margin-top:12px; }
+    </style>
+  </head>
+  <body>
+    <h1>Company Research Report</h1>
+    <form method="post" action="/resolve">
+      <label>Company name</label>
+      <input name="company_name" type="text" required value="{{ company_name or '' }}" placeholder="e.g., Acme Corp" />
+      <label>Expected length (pages)</label>
+      <input name="expected_pages" type="number" min="2" max="20" value="{{ expected_pages or 4 }}" />
+      <label>Topics you want to understand</label>
+      <textarea name="interests" rows="3" placeholder="e.g., Pricing strategy, org structure, AI initiatives">{{ interests or '' }}</textarea>
+      <label>Reference URLs (one per line)</label>
+      <textarea name="reference_urls" rows="4" placeholder="https://company.com/about\nhttps://jobs.company.com/roles/123">{{ reference_urls or '' }}</textarea>
+      <button type="submit">Find Company</button>
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+    </form>
+  </body>
+</html>
+{% elif step == 'disambiguate' %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Select Company</title>
+    <style>
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 24px; max-width: 900px; margin: auto; }
+      h1 { font-weight:700; }
+      .card { border:1px solid #d0d7de; border-radius:10px; padding:12px 16px; margin:10px 0; display:flex; align-items:center; justify-content:space-between; }
+      form { margin:0; }
+      button { background:#0f62fe; color:#fff; border:none; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer; }
+      .meta { color:#57606a; font-size:14px; }
+    </style>
+  </head>
+  <body>
+    <h1>Select the correct company</h1>
+    {% for c in candidates %}
+      <div class="card">
+        <div>
+          <div style="font-weight:600;">{{ c.title }}</div>
+          <div class="meta">{{ c.description }} • <a href="{{ c.url }}" target="_blank">Wikipedia</a></div>
+        </div>
+        <form method="post" action="/generate">
+          <input type="hidden" name="selected_title" value="{{ c.title }}"/>
+          <input type="hidden" name="expected_pages" value="{{ expected_pages }}"/>
+          <input type="hidden" name="interests" value="{{ interests }}"/>
+          <input type="hidden" name="reference_urls" value="{{ reference_urls }}"/>
+          <button type="submit">Use this</button>
+        </form>
+      </div>
+    {% endfor %}
+  </body>
+</html>
+{% endif %}

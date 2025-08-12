@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: company-research
+    runtime: docker
+    plan: starter
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: NEWSAPI_KEY
+        sync: false
+    autoDeploy: true
+    healthCheckPath: /
