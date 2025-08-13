@@ -15,8 +15,8 @@ pandas==2.2.2
 numpy==1.26.4
 tenacity==8.5.0
 python-multipart==0.0.9
-openai==1.40.0
+openai>=1.37.1,<2.0.0
 langchain==0.2.11
-langchain-openai==0.1.21
+
 langchain-community==0.2.10
 tiktoken==0.7.0
