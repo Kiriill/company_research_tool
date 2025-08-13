@@ -12,7 +12,7 @@ duckduckgo-search==5.3.1
 wikipedia==1.4.0
 yfinance==0.2.40
 pandas==2.2.2
-numpy==2.0.1
+numpy==1.26.4
 tenacity==8.5.0
 python-multipart==0.0.9
 openai==1.37.1
