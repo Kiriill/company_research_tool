@@ -5,6 +5,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
+RUN apt-get update --fix-missing
+
 # System deps for WeasyPrint and HTML parsing
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
