@@ -5,6 +5,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
 
+# Test network connectivity by curling an external URL (Google in this case)
+RUN apt-get install -y curl && curl -I https://google.com
+
 RUN apt-get update --fix-missing
 
 # System deps for WeasyPrint and HTML parsing
