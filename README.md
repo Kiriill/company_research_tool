@@ -1,6 +1,6 @@
 # Company Research Report Generator
 
-A FastAPI-based web service that automates company research and generates a McKinsey-style, beautifully formatted PDF report. Users provide a company name, confirm the specific company in a follow-up step, optionally set desired length (pages), topics of interest, and reference URLs (e.g., company site, job posting). The service compiles a concise history, leadership, key products and revenue streams, expected revenue (when available), strategy and outlook, peers and competitive differentiation, company values, and a summary of public reviews (e.g., Glassdoor) into a polished PDF.
+A FastAPI-based web service that automates company research and generates a consulting-style formatted PDF report. Users provide a company name, confirm the specific company in a follow-up step, optionally set desired length (pages), topics of interest, and reference URLs (e.g., company site, job posting). The service compiles a concise history, leadership, key products and revenue streams, expected revenue (when available), strategy and outlook, peers and competitive differentiation, company values, and a summary of public reviews (e.g., Glassdoor) into a polished PDF.
 
 ## Features
 - Two-step input flow: company name → disambiguation/confirmation → generate
